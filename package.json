@@ -21,7 +21,6 @@
     "url": "https://github.com/andela/hermes-ah-backend/issues"
   },
   "homepage": "https://github.com/andela/hermes-ah-backend#readme",
-    
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "body-parser": "^1.18.3",
