@@ -59,3 +59,11 @@ typings/
 
 # next.js build output
 .next
+<<<<<<< HEAD
+=======
+
+# build
+server/build
+.DS_Store
+dist/
+>>>>>>> b2ed81a... :chore(postgreSQL-setup):Setup postgresql database
