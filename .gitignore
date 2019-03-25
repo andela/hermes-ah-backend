@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -63,3 +64,6 @@ typings/
 =======
 node_modules
 >>>>>>> 3c5cf88... Chore(setup): add coveralls code coverage service
+=======
+node_modules
+>>>>>>> 3c5cf881d63e5d73b7718df14c79d578bce86d35
