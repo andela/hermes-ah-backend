@@ -23,3 +23,4 @@ module.exports = {
     use_env_variable: process.env.PROD_DATABASE,
   },
 };
+

@@ -14,3 +14,4 @@ app.listen(port, () => {
   console.log(`App is listen on ${port}`);
   db.sequelize.sync();
 });
+
