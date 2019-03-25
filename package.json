@@ -1,8 +1,12 @@
 {
   "name": "hermes-ah-backend",
   "version": "1.0.0",
-  "description": "Authors Haven - A Social platform for the creative at heart. =======",
+  "description": "Authors Haven - A Social platform for the creative at heart.",
   "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "coveralls": "^3.0.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
