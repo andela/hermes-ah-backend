@@ -7,3 +7,4 @@ script:
   - npm test
 after_success:
   - npm run coveralls
+  
