@@ -16,12 +16,6 @@
       "curly": ["error", "multi-line"],
       "import/no-unresolved": [2, { "commonjs": true }],
       "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
-      "parser": "babel-eslint",
-      "parserOptions": {
-        "sourceType": "module",
-        "ecmaVersion": 2017,
-        "allowImportExportEverywhere": true
-    },
       "valid-jsdoc": ["error", {
         "requireReturn": true,
         "requireReturnType": true,

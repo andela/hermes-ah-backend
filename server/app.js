@@ -1,7 +1,5 @@
-import '@babel/polyfill';
 import express from 'express';
-import cors from'cors';
-import db from './database/models/index';
+import cors from 'cors';
 
 const app = express();
 app.use(cors());
@@ -12,6 +10,4 @@ const port = process.env.PORT || 2000;
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`App is listen on ${port}`);
-  db.sequelize.sync();
 });
-
