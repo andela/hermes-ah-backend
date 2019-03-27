@@ -3,4 +3,3 @@ node_js:
   _ "stable"
 services:
   - postgresql
-  
