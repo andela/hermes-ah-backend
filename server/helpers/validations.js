@@ -51,15 +51,16 @@ const validations = {
     return valid;
   },
   verifyAuthHeader(req) {
-    if (!req.headers.authorization) {
-      return { error: 'error' };
-    }
-    const token = req.headers.authorization;
-    const payload = Authenticate.decode(token);
-    if (!payload) {
+    try {
+      if (!req.headers.authorization) {
+        return { error: 'error' };
+      }
+      const token = req.headers.authorization;
+      const payload = Authenticate.decode(token);
+      return payload;
+    } catch (err) {
       return { error: 'Invalid token' };
     }
-    return payload;
   },
 
   /**
@@ -74,7 +75,7 @@ const validations = {
     const payload = validations.verifyAuthHeader(req);
     let error;
     let status;
-    if (!payload || payload === 'error') {
+    if (!payload || payload.error === 'error') {
       status = 401;
       error = 'You are not authorized';
     }
@@ -141,6 +142,9 @@ const validations = {
     } else {
       next();
     }
+  },
+  compareFieldWithToken(field, token) {
+    return field === token;
   },
 };
 
