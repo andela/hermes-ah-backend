@@ -1,5 +1,4 @@
 import models from '../models';
-import validations from '../helpers/validations';
 import serverError from '../helpers/server-error';
 
 const { User, Follower } = models;
@@ -14,8 +13,7 @@ const { User, Follower } = models;
  */
 const getFollowers = async (req, res) => {
   try {
-    const token = validations.verifyAuthHeader(req);
-    const { id: userId } = token.userObj;
+    const userId = req.user.userObj.id;
     const users = await Follower.findAll({
       where: {
         followee_id: userId,
@@ -38,7 +36,7 @@ const getFollowers = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: 'Successfully retrieved all your followers',
+      message: 'You have successfully retrieved all your followers',
       followers: users,
     });
   } catch (err) {
@@ -57,8 +55,7 @@ const getFollowers = async (req, res) => {
  * @return {undefined}
  */
 const getFollowing = async (req, res) => {
-  const token = validations.verifyAuthHeader(req);
-  const { id: userId } = token.userObj;
+  const userId = req.user.userObj.id;
   try {
     const users = await Follower.findAll({
       where: { follower_id: userId },
@@ -86,7 +83,8 @@ const getFollowing = async (req, res) => {
       });
     }
     return res.status(200).json({
-      message: 'Successfully retrieved all users you are following',
+      message:
+        'You have successfully retrieved all the users you are following',
       following: users,
     });
   } catch (errors) {

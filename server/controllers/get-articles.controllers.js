@@ -2,7 +2,7 @@ import models from '../models';
 import validations from '../helpers/validations';
 import serverError from '../helpers/server-error';
 
-const { Article } = models;
+const { Article, User, Reported_articles: ReportedArticles } = models;
 
 const getArticles = async (req, res) => {
   if (validations.validateArticlePage(req.params.page)) {
@@ -22,11 +22,13 @@ const getArticles = async (req, res) => {
     const offset = pageSize * page - pageSize;
 
     try {
-      const articles = await Article.findAll({
+      const articles = await Article.findAndCountAll({
+        where: { is_reported: false },
         offset,
         limit: pageSize,
         order: ['title'],
         attributes: [
+          'id',
           'slug',
           'title',
           'body',
@@ -34,10 +36,17 @@ const getArticles = async (req, res) => {
           'updatedAt',
           'likes_count',
         ],
+        include: [
+          {
+            model: User,
+            as: 'author',
+            attributes: ['first_name', 'last_name', 'bio', 'image_url'],
+          },
+        ],
       });
-
       return res.status(200).json({
-        articles,
+        articles: articles.rows,
+        articlesCount: articles.count,
       });
     } catch (e) {
       return res.status(500).json({
@@ -47,13 +56,42 @@ const getArticles = async (req, res) => {
   }
   return res.status(400).json({
     errors: {
-      body: ['cannot be anything but numbers'],
+      body: ['Page number cannot be anything but numbers'],
     },
   });
 };
 
+const getAllReportedArticles = async (req, res) => {
+  try {
+    if (!validations.validReportedArticleQueryString(req.query)) {
+      return res.status(400).json({
+        errors: {
+          body: ['Invalid query string'],
+        },
+      });
+    }
+    const reportedArticles = await ReportedArticles.findAll({
+      where: req.query,
+      include: [
+        {
+          model: Article,
+          as: 'article',
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      reportedArticles,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
 const Articles = {
   getArticles,
+  getAllReportedArticles,
 };
 
 export default Articles;

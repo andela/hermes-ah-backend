@@ -41,7 +41,7 @@ const verifyToken = (req, res, next) => {
  */
 const verifyAdmin = (req, res, next) => {
   const payload = validations.verifyAuthHeader(req);
-  const { isAdmin } = payload;
+  const { isAdmin } = payload.userObj;
   if (!isAdmin) {
     return res.status(403).json({
       errors: {
@@ -49,12 +49,28 @@ const verifyAdmin = (req, res, next) => {
       },
     });
   }
+  req.user = payload;
+  return next();
+};
+
+const isVerifiedReviewer = (req, res, next) => {
+  const payload = validations.verifyAuthHeader(req);
+  const { isReviewer, isAdmin } = payload.userObj;
+  if (!isReviewer && !isAdmin) {
+    return res.status(403).json({
+      errors: {
+        body: ['You are not authorized to access this endpoint.'],
+      },
+    });
+  }
+  req.user = payload;
   return next();
 };
 
 const tokenValidator = {
   verifyToken,
   verifyAdmin,
+  isVerifiedReviewer,
 };
 
 export default tokenValidator;

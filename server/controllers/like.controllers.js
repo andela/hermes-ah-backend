@@ -6,8 +6,7 @@ import serverError from '../helpers/server-error';
 const { Article, User } = model;
 
 const toggleLike = async (req, res) => {
-  const token = validations.verifyAuthHeader(req);
-  const { id: userId } = token.userObj;
+  const userId = req.user.userObj.id;
   const { articleId } = req.params;
   try {
     // validate article and user Id
@@ -26,6 +25,13 @@ const toggleLike = async (req, res) => {
       },
     });
     req.article = article;
+    if (!article) {
+      return res.status(404).json({
+        errors: {
+          body: ['This article does not exist'],
+        },
+      });
+    }
 
     const user = await User.findOne({
       where: {
@@ -41,18 +47,19 @@ const toggleLike = async (req, res) => {
     if (userLike) {
       result = await likeHelper.removeLike(user, article);
       return res.status(200).json({
-        message: 'Successfully removed like',
+        message: 'You have successfully disliked this article',
         data: result,
       });
     }
     result = await likeHelper.addLike(user, article);
     return res.status(201).json({
-      message: 'Successfuly added like',
+      message: 'You have successfuly liked this article',
       data: result,
     });
   } catch (error) {
     return res.status(500).json({
       errors: serverError(),
+      error,
     });
   }
 };
